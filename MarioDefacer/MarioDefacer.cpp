@@ -11,9 +11,9 @@ int file_exists(char* filename);
 
 enum class Endianness {
 	Unknown = -1,
-	BigEndian = 0,
-	LittleEndian = 1,
-	ByteSwapped = 2
+	BigEndian,
+	LittleEndian,
+	ByteSwapped
 };
 
 constexpr int BUFFERSIZE = 1024;
@@ -21,6 +21,7 @@ constexpr int BUFFERSIZE = 1024;
 int main(int argc, char** argv)
 {
 	const uint32_t* noface = new uint32_t[3]{ 0x0c020014, 0x00140c02, 0x020c1400 };
+	const char* bup_suffix = " (backup)";
 	size_t n_words, pos = 0;
 	uint32_t n_faces = 0;
 	bool is_first_chunk = true;
@@ -38,18 +39,16 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	char* fext = strrchr(fname, '.');
-	char* bup_fname = new char[strlen(fname) + 4];
+	char* bup_fname = new char[strlen(fname) + strlen(bup_suffix) + 1];
 	strcpy(bup_fname, fname);
+	char* fext = strrchr(fname, '.');
 
 	if (fext) {
-		char* new_fext = new char[strlen(fext) + 4];
-		strcpy(new_fext, ".bak");
-		strcpy(new_fext + strlen(fext), fext);
-		strcpy(bup_fname + strlen(bup_fname) - strlen(fext), new_fext);
+		strcpy(bup_fname + strlen(fname) - strlen(fext), bup_suffix);
+		strcpy(bup_fname + strlen(fname) - strlen(fext) + strlen(bup_suffix), fext);
 	}
 	else {
-		strcpy(bup_fname + strlen(fname), ".bak");
+		strcpy(bup_fname + strlen(fname), bup_suffix);
 	}
 
 	FILE* backup = nullptr;
