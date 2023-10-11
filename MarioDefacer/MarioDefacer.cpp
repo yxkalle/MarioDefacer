@@ -20,7 +20,7 @@ constexpr int BUFFERSIZE = 1024;
 
 int main(int argc, char** argv)
 {
-	const uint32_t* noface = new uint32_t[3]{ 0x0c020014, 0x00140c02, 0x020c1400 };
+	const uint32_t* noface = new uint32_t[3]{ 0x0c020014, 0x1400020c, 0x020c1400 };
 	const char* bup_suffix = " (backup)";
 	size_t n_words, pos = 0;
 	uint32_t n_faces = 0;
@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 			if (buffer[0] == 0x40123780) {
 				endianness = Endianness::BigEndian;
 			}
-			else if (buffer[0] == 0x37804012) {
+			else if (buffer[0] == 0x80371240) {
 				endianness = Endianness::LittleEndian;
 			}
 			else if (buffer[0] == 0x12408037) {
